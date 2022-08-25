@@ -1,0 +1,1 @@
+- Adicionar cenarios de testes mais complexos, seguindo o exemplo de: https://github.com/diegocamara/realworld-api-quarkus
