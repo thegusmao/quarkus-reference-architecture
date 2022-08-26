@@ -35,10 +35,10 @@ public class ProductResource {
     
     @Operation(summary = "Return all products for a specific restaurant")
     @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
-    @APIResponse(responseCode = "404")
+    @APIResponse(responseCode = "404", description = "Restaurant not found")
     @GET
     @Path("/restaurants/{id}")
-    public Response fromRestaurante(@PathParam("id") Long id) {
+    public Response fromRestaurant(@PathParam("id") Long id) {
         List<Product> todos = service.fromRestaurant(id);
         return Response.ok(todos).build();
     }
@@ -53,7 +53,7 @@ public class ProductResource {
 
     @Operation(summary = "Get specific product by id")
     @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
-    @APIResponse(responseCode = "404")
+    @APIResponse(responseCode = "404", description = "Product not found")
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") Long id) {
@@ -66,7 +66,7 @@ public class ProductResource {
     }
 
     @Operation(summary = "Create product")
-    @APIResponse(responseCode = "201")
+    @APIResponse(responseCode = "201", description = "Product created")
     @POST
     @Counted(value = "menu.products.created")
     public Response create(Product product) {
@@ -76,7 +76,7 @@ public class ProductResource {
 
     @Operation(summary = "Update product")
     @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
-    @APIResponse(responseCode = "404")
+    @APIResponse(responseCode = "404", description = "Product not found")
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, Product product) {
@@ -88,8 +88,8 @@ public class ProductResource {
     }
 
     @Operation(summary = "Delete product")
-    @APIResponse(responseCode = "204")
-    @APIResponse(responseCode = "404")
+    @APIResponse(responseCode = "204", description = "Product deleted")
+    @APIResponse(responseCode = "404", description = "Product not found")
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
