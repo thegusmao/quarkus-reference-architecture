@@ -51,10 +51,10 @@ public class ProductService {
     }
 
     @Transactional
-    public Optional<Product> update(Long id, Product produto) {
+    public Optional<Product> update(Long id, Product product) {
         Optional<ProductEntity> entity = repository.findByIdOptional(id);
         if(entity.isPresent()) {
-            entity.get().copy(mapper.toEntity(produto));
+            mapper.updateEntityFromDomain(product, entity.get());
             return Optional.of(mapper.toDomain(entity.get()));
         }
         return Optional.empty();

@@ -17,24 +17,33 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+
 import br.com.redhat.domain.Restaurant;
-import br.com.redhat.resource.openapi.RestaurantResourceSpec;
 import br.com.redhat.service.RestaurantService;
+import io.micrometer.core.annotation.Counted;
 
 @Path("/restaurants")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class RestaurantResource implements RestaurantResourceSpec {
+public class RestaurantResource {
     
     @Inject
     RestaurantService service;
 
+    @Operation(summary = "Return all restaurants")
+    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
     @GET
     public Response all() {
         List<Restaurant> restaurants = service.all();
         return Response.ok(restaurants).build();
     }
 
+    @Operation(summary = "Get specific restaurant by id")
+    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+    @APIResponse(responseCode = "404")
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") Long id) {
@@ -46,12 +55,18 @@ public class RestaurantResource implements RestaurantResourceSpec {
         return Response.status(Status.NOT_FOUND).build();
     }
 
+    @Operation(summary = "Create restaurant")
+    @APIResponse(responseCode = "201")
     @POST
+    @Counted(value = "menu.restaurants.created")
     public Response create(Restaurant restaurant) {       
         Long id = service.create(restaurant);
         return Response.created(URI.create("/restaurants/" + id)).build();
     }
-  
+
+    @Operation(summary = "Update restaurant")
+    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+    @APIResponse(responseCode = "404")
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, Restaurant restaurant) {
@@ -62,6 +77,9 @@ public class RestaurantResource implements RestaurantResourceSpec {
         return Response.status(Status.NOT_FOUND).build();
     }
 
+    @Operation(summary = "Delete restaurant")
+    @APIResponse(responseCode = "204")
+    @APIResponse(responseCode = "404")
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {

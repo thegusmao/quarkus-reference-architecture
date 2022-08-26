@@ -17,18 +17,25 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+
 import br.com.redhat.domain.Product;
-import br.com.redhat.resource.openapi.ProductResourceSpec;
 import br.com.redhat.service.ProductService;
+import io.micrometer.core.annotation.Counted;
 
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ProductResource implements ProductResourceSpec {
+public class ProductResource {
     
     @Inject
     ProductService service;
-
+    
+    @Operation(summary = "Return all products for a specific restaurant")
+    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+    @APIResponse(responseCode = "404")
     @GET
     @Path("/restaurants/{id}")
     public Response fromRestaurante(@PathParam("id") Long id) {
@@ -36,12 +43,17 @@ public class ProductResource implements ProductResourceSpec {
         return Response.ok(todos).build();
     }
 
+    @Operation(summary = "Return all products")
+    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
     @GET
     public Response all() {
         List<Product> todos = service.all();
         return Response.ok(todos).build();
     }
 
+    @Operation(summary = "Get specific product by id")
+    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+    @APIResponse(responseCode = "404")
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") Long id) {
@@ -53,12 +65,18 @@ public class ProductResource implements ProductResourceSpec {
         return Response.status(Status.NOT_FOUND).build();
     }
 
+    @Operation(summary = "Create product")
+    @APIResponse(responseCode = "201")
     @POST
+    @Counted(value = "menu.products.created")
     public Response create(Product product) {
         Long id = service.create(product);
         return Response.created(URI.create("/products/" + id)).build();
     }
 
+    @Operation(summary = "Update product")
+    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+    @APIResponse(responseCode = "404")
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, Product product) {
@@ -69,6 +87,9 @@ public class ProductResource implements ProductResourceSpec {
         return Response.status(Status.NOT_FOUND).build();
     }
 
+    @Operation(summary = "Delete product")
+    @APIResponse(responseCode = "204")
+    @APIResponse(responseCode = "404")
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {

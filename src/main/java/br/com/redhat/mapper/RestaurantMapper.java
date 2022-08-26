@@ -3,6 +3,8 @@ package br.com.redhat.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import br.com.redhat.domain.Restaurant;
 import br.com.redhat.entity.RestaurantEntity;
@@ -17,4 +19,7 @@ public interface RestaurantMapper {
     List<RestaurantEntity> toEntities(List<Restaurant> domains);
 
     List<Restaurant> toDomains(List<RestaurantEntity> entities);
+
+    @Mapping( target = "id", ignore = true)
+    void updateEntityFromDomain(Restaurant restaurant, @MappingTarget RestaurantEntity entity);
 }

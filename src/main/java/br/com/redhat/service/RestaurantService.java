@@ -51,7 +51,7 @@ public class RestaurantService {
     public Optional<Restaurant> update(Long id, Restaurant restaurant) {
         Optional<RestaurantEntity> entity = repository.findByIdOptional(id);
         if(entity.isPresent()) {
-            entity.get().copy(mapper.toEntity(restaurant));
+            mapper.updateEntityFromDomain(restaurant, entity.get());
             return Optional.of(mapper.toDomain(entity.get()));
         }
         return Optional.empty();
