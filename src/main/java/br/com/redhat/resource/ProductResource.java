@@ -24,7 +24,9 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import br.com.redhat.domain.Product;
 import br.com.redhat.service.ProductService;
 import io.micrometer.core.annotation.Counted;
+import io.quarkus.security.Authenticated;
 
+@Authenticated
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
