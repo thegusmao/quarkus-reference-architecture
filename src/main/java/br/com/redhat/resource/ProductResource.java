@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response.Status;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
 import br.com.redhat.domain.Product;
 import br.com.redhat.service.ProductService;
@@ -36,8 +37,10 @@ public class ProductResource {
     ProductService service;
     
     @Operation(summary = "Return all products for a specific restaurant")
-    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
-    @APIResponse(responseCode = "404", description = "Restaurant not found")
+    @APIResponses({
+        @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
+        @APIResponse(responseCode = "404", description = "Restaurant not found")
+    })
     @GET
     @Path("/restaurants/{id}")
     public Response fromRestaurant(@PathParam("id") Long id) {
@@ -46,7 +49,9 @@ public class ProductResource {
     }
 
     @Operation(summary = "Return all products")
-    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+    @APIResponses({
+        @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+    })
     @GET
     public Response all() {
         List<Product> todos = service.all();
@@ -54,8 +59,10 @@ public class ProductResource {
     }
 
     @Operation(summary = "Get specific product by id")
-    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
-    @APIResponse(responseCode = "404", description = "Product not found")
+    @APIResponses({
+        @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
+        @APIResponse(responseCode = "404", description = "Product not found")
+    })
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") Long id) {
@@ -68,7 +75,9 @@ public class ProductResource {
     }
 
     @Operation(summary = "Create product")
-    @APIResponse(responseCode = "201", description = "Product created")
+    @APIResponses({
+        @APIResponse(responseCode = "201", description = "Product created")
+    })
     @POST
     @Counted(value = "menu.products.created")
     public Response create(Product product) {
@@ -77,8 +86,10 @@ public class ProductResource {
     }
 
     @Operation(summary = "Update product")
-    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
-    @APIResponse(responseCode = "404", description = "Product not found")
+    @APIResponses({
+        @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
+        @APIResponse(responseCode = "404", description = "Product not found")
+    })
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, Product product) {
@@ -90,8 +101,10 @@ public class ProductResource {
     }
 
     @Operation(summary = "Delete product")
-    @APIResponse(responseCode = "204", description = "Product deleted")
-    @APIResponse(responseCode = "404", description = "Product not found")
+    @APIResponses({
+        @APIResponse(responseCode = "204", description = "Product deleted"),
+        @APIResponse(responseCode = "404", description = "Product not found")
+    })
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {

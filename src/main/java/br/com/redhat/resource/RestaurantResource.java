@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response.Status;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
 import br.com.redhat.domain.Restaurant;
 import br.com.redhat.service.RestaurantService;
@@ -34,7 +35,9 @@ public class RestaurantResource {
     RestaurantService service;
 
     @Operation(summary = "Return all restaurants")
-    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+    @APIResponses({
+        @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+    })
     @GET
     public Response all() {
         List<Restaurant> restaurants = service.all();
@@ -42,8 +45,10 @@ public class RestaurantResource {
     }
 
     @Operation(summary = "Get specific restaurant by id")
-    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
-    @APIResponse(responseCode = "404", description = "Restaurant not found")
+    @APIResponses({
+        @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
+        @APIResponse(responseCode = "404", description = "Restaurant not found")
+    })
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") Long id) {
@@ -56,7 +61,9 @@ public class RestaurantResource {
     }
 
     @Operation(summary = "Create restaurant")
-    @APIResponse(responseCode = "201", description = "Restaurant created")
+    @APIResponses({
+        @APIResponse(responseCode = "201", description = "Restaurant created")
+    })
     @POST
     @Counted(value = "menu.restaurants.created")
     public Response create(Restaurant restaurant) {       
@@ -65,8 +72,10 @@ public class RestaurantResource {
     }
 
     @Operation(summary = "Update restaurant")
-    @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
-    @APIResponse(responseCode = "404", description = "Restaurant not found")
+    @APIResponses({
+        @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
+        @APIResponse(responseCode = "404", description = "Restaurant not found")
+    })
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, Restaurant restaurant) {
@@ -78,8 +87,10 @@ public class RestaurantResource {
     }
 
     @Operation(summary = "Delete restaurant")
-    @APIResponse(responseCode = "204", description = "Restaurant deleted")
-    @APIResponse(responseCode = "404", description = "Restaurant not found")
+    @APIResponses({
+        @APIResponse(responseCode = "204", description = "Restaurant deleted"),
+        @APIResponse(responseCode = "404", description = "Restaurant not found")
+    })
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
