@@ -25,7 +25,9 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import br.com.redhat.domain.Restaurant;
 import br.com.redhat.service.RestaurantService;
 import io.micrometer.core.annotation.Counted;
+import io.quarkus.security.Authenticated;
 
+@Authenticated
 @Path("/restaurants")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -36,7 +38,8 @@ public class RestaurantResource {
 
     @Operation(summary = "Return all restaurants")
     @APIResponses({
-        @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+        @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
+        @APIResponse(responseCode = "401", description = "Not Authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON))
     })
     @GET
     public Response all() {
@@ -47,7 +50,8 @@ public class RestaurantResource {
     @Operation(summary = "Get specific restaurant by id")
     @APIResponses({
         @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
-        @APIResponse(responseCode = "404", description = "Restaurant not found")
+        @APIResponse(responseCode = "404", description = "Restaurant not found"),
+        @APIResponse(responseCode = "401", description = "Not Authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON))
     })
     @GET
     @Path("/{id}")
@@ -62,7 +66,8 @@ public class RestaurantResource {
 
     @Operation(summary = "Create restaurant")
     @APIResponses({
-        @APIResponse(responseCode = "201", description = "Restaurant created")
+        @APIResponse(responseCode = "201", description = "Restaurant created"),
+        @APIResponse(responseCode = "401", description = "Not Authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON))
     })
     @POST
     @Counted(value = "menu.restaurants.created")
@@ -74,7 +79,8 @@ public class RestaurantResource {
     @Operation(summary = "Update restaurant")
     @APIResponses({
         @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
-        @APIResponse(responseCode = "404", description = "Restaurant not found")
+        @APIResponse(responseCode = "404", description = "Restaurant not found"),
+        @APIResponse(responseCode = "401", description = "Not Authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON))
     })
     @PUT
     @Path("/{id}")
@@ -89,7 +95,8 @@ public class RestaurantResource {
     @Operation(summary = "Delete restaurant")
     @APIResponses({
         @APIResponse(responseCode = "204", description = "Restaurant deleted"),
-        @APIResponse(responseCode = "404", description = "Restaurant not found")
+        @APIResponse(responseCode = "404", description = "Restaurant not found"),
+        @APIResponse(responseCode = "401", description = "Not Authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON))
     })
     @DELETE
     @Path("/{id}")

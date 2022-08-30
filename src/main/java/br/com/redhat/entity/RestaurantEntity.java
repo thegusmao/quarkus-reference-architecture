@@ -12,7 +12,7 @@ public class RestaurantEntity {
     @Id @GeneratedValue private Long id;
     private String name;
     private String address;
-
+    
     @OneToMany(mappedBy = "restaurant")
     private List<ProductEntity> products;
     
@@ -21,11 +21,6 @@ public class RestaurantEntity {
     public RestaurantEntity(String name, String address) {
         this.name = name;
         this.address = address;
-    }
-
-    public void copy(RestaurantEntity other) {
-        this.address = other.address;
-        this.name = other.name;
     }
 
     public Long getId() {
@@ -58,5 +53,4 @@ public class RestaurantEntity {
     public void setProducts(List<ProductEntity> products) {
         this.products = products;
     }
-
 }

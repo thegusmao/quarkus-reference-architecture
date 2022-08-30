@@ -39,6 +39,7 @@ public class ProductResource {
     @Operation(summary = "Return all products for a specific restaurant")
     @APIResponses({
         @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
+        @APIResponse(responseCode = "401", description = "Not Authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
         @APIResponse(responseCode = "404", description = "Restaurant not found")
     })
     @GET
@@ -50,7 +51,8 @@ public class ProductResource {
 
     @Operation(summary = "Return all products")
     @APIResponses({
-        @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON))
+        @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
+        @APIResponse(responseCode = "401", description = "Not Authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON))
     })
     @GET
     public Response all() {
@@ -61,6 +63,7 @@ public class ProductResource {
     @Operation(summary = "Get specific product by id")
     @APIResponses({
         @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
+        @APIResponse(responseCode = "401", description = "Not Authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
         @APIResponse(responseCode = "404", description = "Product not found")
     })
     @GET
@@ -88,6 +91,7 @@ public class ProductResource {
     @Operation(summary = "Update product")
     @APIResponses({
         @APIResponse(responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
+        @APIResponse(responseCode = "401", description = "Not Authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
         @APIResponse(responseCode = "404", description = "Product not found")
     })
     @PUT
@@ -103,6 +107,7 @@ public class ProductResource {
     @Operation(summary = "Delete product")
     @APIResponses({
         @APIResponse(responseCode = "204", description = "Product deleted"),
+        @APIResponse(responseCode = "401", description = "Not Authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON)),
         @APIResponse(responseCode = "404", description = "Product not found")
     })
     @DELETE
