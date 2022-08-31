@@ -8,8 +8,10 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import br.com.redhat.domain.Restaurant;
+import br.com.redhat.domain.RestaurantWithProducts;
 import br.com.redhat.entity.RestaurantEntity;
 import br.com.redhat.mapper.RestaurantMapper;
+import br.com.redhat.mapper.RestaurantWithProductsMapper;
 import br.com.redhat.repository.RestaurantRepository;
 
 @ApplicationScoped
@@ -17,6 +19,9 @@ public class RestaurantService {
     
     @Inject
     RestaurantMapper mapper;
+
+    @Inject
+    RestaurantWithProductsMapper completeMapper;
 
     @Inject
     RestaurantRepository repository;
@@ -38,6 +43,14 @@ public class RestaurantService {
         Optional<RestaurantEntity> entity = repository.findByIdOptional(id);
         if(entity.isPresent()) {
             return Optional.of(mapper.toDomain(entity.get()));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<RestaurantWithProducts> withIdComplete(Long id) {
+        Optional<RestaurantEntity> entity = repository.findByIdOptional(id);
+        if(entity.isPresent()) {
+            return Optional.of(completeMapper.toDomain(entity.get()));
         }
         return Optional.empty();
     }

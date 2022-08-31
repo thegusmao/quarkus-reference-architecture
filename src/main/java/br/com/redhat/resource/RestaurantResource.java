@@ -23,6 +23,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
 import br.com.redhat.domain.Restaurant;
+import br.com.redhat.domain.RestaurantWithProducts;
 import br.com.redhat.service.RestaurantService;
 import io.micrometer.core.annotation.Counted;
 import io.quarkus.security.Authenticated;
@@ -56,7 +57,7 @@ public class RestaurantResource {
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") Long id) {
-        Optional<Restaurant> restaurant = service.withId(id);
+        Optional<RestaurantWithProducts> restaurant = service.withIdComplete(id);
         if(restaurant.isPresent()) {
             return Response.ok(restaurant.get()).build();
         }
