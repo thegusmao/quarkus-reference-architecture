@@ -2,15 +2,11 @@ package br.com.redhat.mapper;
 
 import java.util.List;
 
-import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import br.com.redhat.domain.Product;
 import br.com.redhat.domain.Restaurant;
-import br.com.redhat.domain.RestaurantWithProducts;
-import br.com.redhat.entity.ProductEntity;
 import br.com.redhat.entity.RestaurantEntity;
 
 @Mapper(componentModel = "cdi")
